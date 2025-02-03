@@ -6,6 +6,5 @@ import GlobalStyle from './styles/global.ts'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
-    <GlobalStyle />
   </StrictMode>,
 )
