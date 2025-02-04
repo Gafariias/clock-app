@@ -27,7 +27,7 @@ export default function Home(p: props) {
     const timeString = date;
     
     return(
-        <Main>
+        <Main className={theme.title == "light" ? "daytime" : "nighttime"}>
             
         </Main>
     )
