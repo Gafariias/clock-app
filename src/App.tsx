@@ -10,7 +10,6 @@ function App() {
 
   const getDataFromChild = (data: themeTS) => {
       setTheme(data)
-      console.log(data)
   }
 
   return (

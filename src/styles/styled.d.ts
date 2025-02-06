@@ -9,6 +9,11 @@ declare module 'styled-components' {
             font: string,
             element: string,
             hover: string
+        },
+        images: {
+            desktop: string,
+            tablet: string,
+            mobile: string
         }
     }
 }
