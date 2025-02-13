@@ -1,17 +1,19 @@
 export interface timeApiTS  {
-    year: number;
-    month: number;
-    day: number;
-    hour: number;
-    minute: number;
-    seconds: number;
-    milliSeconds: number;
-    dateTime: string;
-    date: string;
-    time: string;
-    timeZone: string;
-    dayOfWeek: string;
-    dstActive: boolean
+    utc_offset: string;
+    timezone: string;
+    day_of_week: number;
+    day_of_year: number;
+    datetime: string;
+    utc_datetime: string;
+    unixtime: number;
+    raw_offset: string;
+    week_number: number;
+    dst: boolean;
+    abbreviation: string;
+    dst_offset: number;
+    dst_from: string,
+    dst_until: string,
+    client_ip: string
 }
 
 export interface IPLocationTS {

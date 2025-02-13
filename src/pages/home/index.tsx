@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
 import { 
     Main, 
     Wrapper, 
@@ -13,7 +12,9 @@ import light from "../../styles/themes/light";
 import themeTS from "../../types/theme";
 import { IPLocationTS, timeApiTS } from "../../models/apis";
 import Quote from "../../components/quote";
-import { ArrowDown, ArrowUp, Moon, Sun } from "../../assets/icons";
+import { ArrowDown, Moon, Sun } from "../../assets/icons";
+import { ipAPI } from "../../api/ipAPI";
+import { timeAPI } from "../../api/timeAPI";
 
 interface props {
     onData(theme: themeTS): void
@@ -28,57 +29,38 @@ export default function Home(p: props) {
     const [locationAPIData, setLocationAPIData] = useState<IPLocationTS>()
     const [loading, setIsLoading] = useState(true)
     const [date, setDate] = useState(new Date());
+    const [icon, setIcon] = useState(<Moon/>);
 
     const toggleOpen = () =>  {
         isOpen ? setIsOpen(false) : setIsOpen(true)
     }
+
+
     useEffect(() => {
-        axios.get<string>("https://api.ipify.org")
+        ipAPI.getIP()
         .then(res => {
-            setIP(res.data)
+            setIP(res)
         })
         .catch(err => {
             console.error(err)
         })
     }, [])
 
-    // useEffect(() => {
-    //     let error = false
-    //     console.log(IP)
-    //     if (IP != undefined) {
-    //         axios.get<timeApiTS>("https://timeapi.io/api/time/current/ip", {
-    //             params: {
-    //                 ipAddress: IP
-    //             }
-    //         })
-    //         .then(res => {
-    //             setTimeAPIData(res.data)
-    //         })
-    //         .catch(err => {
-    //             console.error(err)
-    //             error = true
-    //         })
-
-    //         axios.get<IPLocationTS>("https://api.ipbase.com/v2/info", {
-    //             params: {
-    //                 apikey: "ipb_live_jpGBFHSbom4lz7gs8FH9wdoNA93uo0fPHkxX8ss5",
-    //                 language: "en",
-    //                 ip: IP
-    //             }
-    //         })
-    //         .then(res => {
-    //             setLocationAPIData(res.data)
-    //         })
-    //         .catch(err => {
-    //             console.error(err)
-    //             error = true
-    //         })
-    //     }
-
-    //     console.log(locationAPIData)
-
-    //     error ? setIsLoading(true) : setIsLoading(false)
-    // }, [IP])
+    useEffect(() => {
+        console.log(IP)
+        if (IP != undefined && IP != "") {
+            timeAPI.getTimeData()
+            .then(response => {
+                setTimeAPIData(response)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+        }
+    }, [IP])
 
     useEffect(() => {
         const timerID = setInterval(() => tick(), 1000);
@@ -92,11 +74,13 @@ export default function Home(p: props) {
     useEffect(() => {
         if ( date.getSeconds() >= 30) {
             setTheme(dark)
+            setIcon(<Moon/>)
             setMsg("Good Evening")
         } else if (date.getSeconds() >= 15)  {
             setMsg("Good Afternoon")
         }else {
             setTheme(light)
+            setIcon(<Sun/>)
             setMsg("Good Morning")
         }
         p.onData(theme)
@@ -107,10 +91,11 @@ export default function Home(p: props) {
     return(
         <Main>
             <Wrapper>
-                <Quote isOpen={isOpen}/>
+                <Quote isopen={isOpen}/>
 
-                <MainText isOpen={isOpen}>
+                <MainText isopen={isOpen}>
                     <GreetingMessage>
+                        {icon}
                         <h2>{msg}</h2>
                     </GreetingMessage>
 
@@ -122,10 +107,11 @@ export default function Home(p: props) {
                                 <h1>{`${timeString.getHours()}:${timeString.getMinutes()}`}</h1>
                             )
                         }
-                        <h4>São Paulo/America</h4>
+                        <h4>{timeAPIData?.abbreviation}</h4>
                     </Hour>
 
-                    <h3>IN {locationAPIData?.data.location.city.name}, {locationAPIData?.data.location.country.alpha2}</h3>
+                    {/* <h3>IN {`${locationAPIData?.data.location.city.name}, ${locationAPIData?.data.location.country.hasc_id}`}</h3> */}
+                    <h3>IN CURITIBA, BR</h3>
 
                     <button onClick={toggleOpen}>
                         MORE 
@@ -135,11 +121,19 @@ export default function Home(p: props) {
                     </button>
                 </MainText>
 
-                <ExtraText isOpen={isOpen}>
-                        <span><h4>CURRENT TIMEZONE</h4> <h3>Europe/London</h3></span>
-                        <span><h4>DAY OF THE YEAR</h4> <h3>295</h3></span>
-                        <span><h4>DAY OF THE WEEK</h4> <h3>5</h3></span>
-                        <span><h4>WEEK NUMBER</h4> <h3>42</h3></span>
+                <ExtraText isopen={isOpen}>
+                        {
+                            loading ? (
+                                <h1>Carregando</h1>
+                            ) : (
+                                <>
+                                    <span><h4>CURRENT TIMEZONE</h4> <h3>{timeAPIData?.timezone}</h3></span>
+                                    <span><h4>DAY OF THE YEAR</h4> <h3>{timeAPIData?.day_of_year}</h3></span>
+                                    <span><h4>DAY OF THE WEEK</h4>  <h3>{timeAPIData?.day_of_week}</h3></span>
+                                    <span><h4>WEEK NUMBER</h4> <h3>{timeAPIData?.week_number}</h3></span>      
+                                </>
+                            )
+                        }
                 </ExtraText>
             </Wrapper>
         </Main>

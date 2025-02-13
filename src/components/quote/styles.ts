@@ -7,9 +7,9 @@ const hoverRotateAnimation = keyframes`
     100% {transform: rotate(365deg)}
 `
 
-export const Container = styled.section<{isOpen: boolean}>`
+export const Container = styled.section<{isopen: boolean}>`
     width: 100%;
-    max-height: ${p => p.isOpen ? '0' : '100vh'};
+    max-height: ${p => p.isopen ? '0' : '100vh'};
     overflow: hidden;
     transition: max-height 200ms ease;
     

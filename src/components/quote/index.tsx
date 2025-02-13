@@ -5,7 +5,7 @@ import { QuoteAPI } from '../../api/quoteAPI'
 import ReactLoading from 'react-loading'
 import { Refresh } from '../../assets/icons'
 
-export default function Quote(p: {isOpen:boolean}) {
+export default function Quote(p: {isopen:boolean}) {
     const [quote, setQuote] = useState<quotesTS>()
     const [loading, setLoading] = useState(true)
     
@@ -34,7 +34,7 @@ export default function Quote(p: {isOpen:boolean}) {
     }, [])
 
     return(
-        <Container isOpen={p.isOpen}>
+        <Container isopen={p.isopen}>
             {
                 loading ? (
                     <>

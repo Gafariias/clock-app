@@ -24,10 +24,10 @@ export const Wrapper = styled.div`
     } 
 `
 
-export const MainText = styled.section<{isOpen: boolean}>`
+export const MainText = styled.section<{isopen: boolean}>`
     color: white;
 
-    margin-bottom: ${p => p.isOpen ? "12rem" : "0"};
+    margin-bottom: ${p => p.isopen ? "12rem" : "0"};
     transition: margin-bottom 200ms ease;
 
     h3 {
@@ -62,7 +62,7 @@ export const MainText = styled.section<{isOpen: boolean}>`
             background-color: ${p => p.theme.colors.element};
             border-radius: 100%;
             
-            transform: rotate(${p => p.isOpen ? "180deg" : "0"});
+            transform: rotate(${p => p.isopen ? "180deg" : "0"});
             transition: transform 100ms ease;
         }
     }
@@ -70,11 +70,15 @@ export const MainText = styled.section<{isOpen: boolean}>`
 
 export const GreetingMessage = styled.div`
     display: flex;
+    justify-content: left;
+    align-items: center;
+    
     h2 {
         margin-left: .5rem;
         font-size: 5vw;
         letter-spacing: .7vw;
         font-weight: 400;
+        margin-left: 1rem;
     }
 `
 
@@ -89,15 +93,16 @@ export const Hour = styled.section`
     }
 
     h4 {
+        margin-left: 1rem;
         font-weight: 300;
-        font-size: .6rem;
+        font-size: .8rem;
     }
 `
 
-export const ExtraText = styled.section<{isOpen: boolean}>`
-    max-height: ${p => p.isOpen ? "20rem" : "0"};
+export const ExtraText = styled.section<{isopen: boolean}>`
+    max-height: ${p => p.isopen ? "20rem" : "0"};
     transition: max-height 200ms ease;
-    padding: ${p => p.isOpen ? "2rem 1.5rem" : "0"};
+    padding: ${p => p.isopen ? "2rem 1.5rem" : "0"};
     width: 100vw;
     overflow: hidden;
     position: fixed;
@@ -120,7 +125,7 @@ export const ExtraText = styled.section<{isOpen: boolean}>`
 
         h3 {
             font-weight: 500;
-            font-size: 5vw;
+            font-size: 4.5vw;
         }
     }
 `
